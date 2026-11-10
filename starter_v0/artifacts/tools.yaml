@@ -45,7 +45,7 @@ tools:
       required: [query]
 
   - name: lookup
-    description: "Tra cứu thông tin trên internet."
+    description: "Search the web. Keep query to the subject (for example, 'AI'); use topic=news to request news and timeframe for the date range. Do not append 'news' to query when topic=news."
     parameters:
       type: object
       properties:
@@ -86,7 +86,7 @@ tools:
 
   # ---------------- Bonus tools ----------------
   - name: send
-    description: "Gửi một đoạn văn bản đi."
+    description: "Chỉ gửi văn bản lên kênh Telegram khi người dùng yêu cầu đăng lên Telegram. Không dùng tool này để trả lời người dùng hoặc gửi nội dung không liên quan. Trước khi gửi, phải dùng clarify hỏi xác nhận yes/no; chỉ gọi send sau khi người dùng xác nhận rõ ràng."
     parameters:
       type: object
       properties:
@@ -123,3 +123,12 @@ tools:
         max_pages: {type: integer, default: 5, description: "Số trang"}
         max_chars: {type: integer, default: 8000, description: "Số ký tự"}
       required: [arxiv_url]
+
+  - name: github_search
+    description: "Search public GitHub issues and pull requests. Use for bugs, implementation reports, and project discussions hosted on GitHub; do not use for general web news or social posts."
+    parameters:
+      type: object
+      properties:
+        query: {type: string, default: "", description: "GitHub issue search terms"}
+        max_results: {type: integer, default: 5, description: "Number of results from 1 to 10"}
+      required: [query]

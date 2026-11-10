@@ -3,5 +3,154 @@
   "dataset_role": "group",
   "description": "Case do NHÓM tự viết thêm để cover thêm trường hợp. Mỗi case cần: id, phase='B', query HOẶC turns, failure_type (thuộc allowed_failure_types), và expect (tool_calls[...] hoặc no_tool=true). Nên kèm metadata.what_it_tests.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_timeline_handle_without_at",
+      "phase": "B",
+      "query": "Lấy 3 tweet mới nhất từ tài khoản @karpathy.",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {"name": "timeline", "args": {"screenname": "karpathy", "limit": 3}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Chuẩn hóa username có @ thành screenname không có @ và giữ limit=3."
+      }
+    },
+    {
+      "id": "G02_latest_social_search",
+      "phase": "B",
+      "query": "Find the latest tweets about AI safety.",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {"name": "social_search", "args": {"query": "AI safety", "search_type": "Latest"}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Explicitly requested latest posts should route to social_search with search_type=Latest."
+      }
+    },
+    {
+      "id": "G03_github_issue_search",
+      "phase": "B",
+      "query": "Search GitHub issues for pandas nullable dtype bug.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "github_search", "args": {"query": "pandas nullable dtype bug"}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "A request explicitly scoped to GitHub issues should use github_search rather than general web lookup."
+      }
+    },
+    {
+      "id": "G04_acknowledgment_no_tool",
+      "phase": "B",
+      "query": "Thanks, that is all for now.",
+      "failure_type": "unnecessary_tool",
+      "expect": {"no_tool": true, "behavior": "answer_without_tool"},
+      "metadata": {
+        "what_it_tests": "A simple acknowledgment does not need a research or action tool."
+      }
+    },
+    {
+      "id": "G05_missing_my_account_handle",
+      "phase": "B",
+      "query": "Show me the latest tweets from my account.",
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {"name": "clarify", "args": {"response_type": "text"}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "The agent must ask for the account handle instead of guessing who 'my account' refers to."
+      }
+    },
+    {
+      "id": "G06_multiturn_timeframe_correction",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Find today's AI news."},
+        {"role": "user", "content": "Actually, use this month instead of today."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {"name": "lookup", "args": {"query": "AI", "topic": "news", "timeframe": "month"}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Apply the latest timeframe correction while retaining the AI news topic."
+      }
+    },
+    {
+      "id": "G07_multiturn_social_sort_correction",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Find top tweets about OpenAI."},
+        {"role": "user", "content": "Actually, make that the latest tweets."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {"name": "social_search", "args": {"query": "OpenAI", "search_type": "Latest"}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Use the corrected Latest sort instead of retaining the earlier Top sort."
+      }
+    },
+    {
+      "id": "G08_multiturn_switch_web_to_social",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Search the web for news about OpenAI."},
+        {"role": "user", "content": "Use tweets instead, keeping the same topic."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "social_search", "args": {"query": "OpenAI"}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Switch from web news lookup to social_search while carrying the OpenAI topic."
+      }
+    },
+    {
+      "id": "G09_multiturn_cancel_send",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Send this exact message to Telegram: Demo starts at 4:30."},
+        {"role": "assistant", "content": "Do you confirm that I should send this message?"},
+        {"role": "user", "content": "No, do not send it."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"no_tool": true, "behavior": "answer_without_tool"},
+      "metadata": {
+        "what_it_tests": "Respect a user's rejection of a pending Telegram send and do not call the send tool."
+      }
+    },
+    {
+      "id": "G10_multiturn_refine_web_query",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Find this week's news about renewable energy."},
+        {"role": "user", "content": "Narrow it to offshore wind."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {"name": "lookup", "args": {"query": "offshore wind", "topic": "news", "timeframe": "week"}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Refine the subject to offshore wind while carrying forward news intent and the weekly timeframe."
+      }
+    }
+  ]
 }
