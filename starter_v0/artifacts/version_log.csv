@@ -1,1 +1,2 @@
 version,author,changed_artifact,artifact_version,prompt_hash,tools_hash,reason,hypothesis,metric_before,metric_after,run_file
+v0,team,none,v0+pf0c107a9d7a1+t8db0ba629f52,f0c107a9d7a1,8db0ba629f52,Baseline — starter prompt có chỉ dẫn xấu cố ý (đoán thay vì hỏi lại / gửi không cần confirm / làm 1 bước),n/a,n/a,case_acc=31.25% routing=75% arg=62.5% multiturn=50%,runs/v0_base_gemini_20261110T105039551215.run.json
