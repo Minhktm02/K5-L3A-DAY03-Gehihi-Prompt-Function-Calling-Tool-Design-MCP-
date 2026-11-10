@@ -532,12 +532,36 @@ with tab_chat:
 # ─────────────────────────────────────────────────────────────────────────────
 with tab_playground:
     st.markdown("### 🧪 **Tool Playground — Thử nghiệm trực tiếp từng Tool**")
-    st.caption("Cho phép kiểm tra hoạt động của 11 Tool độc lập (không qua Model), hỗ trợ demo kỹ thuật & kiểm tra API:")
+    st.caption("Chạy và kiểm thử trực tiếp 11 Tools độc lập (gọi hàm Python thuần, không tốn credit Model):")
+
+    # Featured Box for New Custom Tool: Wikipedia
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(14, 116, 144, 0.1) 100%); border: 1px solid rgba(6, 182, 212, 0.4); border-radius: 12px; padding: 14px 18px; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 1.6rem;">📖</span>
+                <div>
+                    <strong style="color: #67e8f9; font-size: 1rem;">🌟 Custom Tool mới tự phát triển: Wikipedia Search</strong>
+                    <div style="color: #94a3b8; font-size: 0.82rem;">Tra cứu bách khoa toàn thư Wikipedia đa ngôn ngữ (vi/en), không cần API Key, trả về extract tóm tắt + link trích dẫn.</div>
+                </div>
+            </div>
+            <span style="background: #0891b2; color: #fff; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700;">TOOL MỚI</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Tool Selector with Wikipedia first in list
+    tool_keys = list(TOOL_FUNCTIONS.keys())
+    # Put wikipedia at index 0 for easy discovery
+    if "wikipedia" in tool_keys:
+        tool_keys.remove("wikipedia")
+        tool_keys.insert(0, "wikipedia")
 
     tool_choice = st.selectbox(
         "Chọn Tool để chạy thử nghiệm:",
-        list(TOOL_FUNCTIONS.keys()),
-        format_func=lambda x: f"{get_tool_meta(x)['icon']} {x} — {get_tool_meta(x)['label']}",
+        tool_keys,
+        index=0,
+        format_func=lambda x: f"{get_tool_meta(x)['icon']} {x} — {get_tool_meta(x)['label']}" + (" (🌟 Tool mới)" if x == "wikipedia" else ""),
     )
 
     meta = get_tool_meta(tool_choice)
@@ -547,19 +571,42 @@ with tab_playground:
     if tool_choice == "wikipedia":
         col1, col2 = st.columns([3, 1])
         with col1:
-            wiki_q = st.text_input("Truy vấn Wikipedia", value="Artificial neural network")
+            wiki_q = st.text_input("Từ khóa tra cứu Wikipedia", value="Artificial neural network")
         with col2:
             wiki_lang = st.selectbox("Ngôn ngữ", ["en", "vi"], index=0)
-        wiki_limit = st.slider("Số lượng kết quả", 1, 10, 3)
+        wiki_limit = st.slider("Số lượng bài viết", 1, 10, 3)
 
-        if st.button("🚀 Chạy Wikipedia Search", type="primary"):
-            with st.spinner("Đang tìm trên Wikipedia..."):
+        c_w1, c_w2, c_w3 = st.columns(3)
+        with c_w1:
+            if st.button("🔍 Mẫu: Deep Learning", use_container_width=True):
+                wiki_q = "Deep learning"
+        with c_w2:
+            if st.button("🔍 Mẫu: Transformer (AI)", use_container_width=True):
+                wiki_q = "Transformer (deep learning architecture)"
+        with c_w3:
+            if st.button("🔍 Mẫu: Trí tuệ nhân tạo (vi)", use_container_width=True):
+                wiki_q = "Trí tuệ nhân tạo"
+                wiki_lang = "vi"
+
+        if st.button("🚀 Chạy Wikipedia Search Ngay", type="primary", use_container_width=True):
+            with st.spinner(f"Đang tìm '{wiki_q}' trên Wikipedia ({wiki_lang})..."):
                 res = TOOL_FUNCTIONS["wikipedia"](query=wiki_q, lang=wiki_lang, max_results=wiki_limit)
-            st.json(res)
-            if "items" in res:
+
+            if "items" in res and res["items"]:
+                st.success(f"✅ Tìm thấy {len(res['items'])} kết quả trên Wikipedia ({wiki_lang}):")
                 for item in res["items"]:
-                    st.markdown(f"**[{item['title']}]({item['url']})**")
-                    st.write(item.get("summary", ""))
+                    with st.container():
+                        st.markdown(f"#### 🔗 [{item['title']}]({item['url']})")
+                        st.write(item.get("summary") or "(Không có tóm tắt ngắn)")
+                        st.caption(f"Nguồn: `{item.get('source')}` • URL: {item.get('url')}")
+                        st.divider()
+            elif "error" in res:
+                st.error(f"❌ Lỗi: {res.get('message', res['error'])}")
+            else:
+                st.warning("Không tìm thấy kết quả nào.")
+
+            with st.expander("📦 Xem Raw JSON Trả Về"):
+                st.json(res)
 
     elif tool_choice == "papers":
         paper_q = st.text_input("Từ khóa arXiv", value="Prompt engineering for LLMs")
