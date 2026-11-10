@@ -25,16 +25,16 @@ Chưa có public demo URL được ghi nhận. Chạy local từ `starter_v0` b�
 
 | Tên tool | Làm được gì | Tool mới nhóm thêm? |
 |---|---|---|
-| `clarify` | Hỏi người dùng để lấy thông tin còn thiếu hoặc xác nhận hành động. | Không |
-| `timeline` | Lấy bài đăng gần đây từ một tài khoản X. | Không |
-| `social_search` | Tìm bài đăng X theo từ khóa, mới nhất hoặc phổ biến. | Không |
-| `lookup` | Tìm thông tin web, gồm tin tức theo khoảng thời gian. | Không |
-| `fetch` | Đọc nội dung của một URL cụ thể. | Không |
-| `format` | Biến các kết quả đã thu thập thành digest Markdown. | Không |
-| `send` | Gửi nội dung lên Telegram sau khi người dùng xác nhận. | Không |
-| `policy` | Tìm trong tài liệu chính sách nội bộ cục bộ. | Không |
-| `papers` | Tìm bài nghiên cứu trên arXiv. | Không |
-| `paper_text` | Trích xuất văn bản từ bài arXiv. | Không |
+| `clarify` | Hỏi người dùng để lấy thông tin còn thiếu hoặc xác nhận hành động. | có |
+| `timeline` | Lấy bài đăng gần đây từ một tài khoản X. | có |
+| `social_search` | Tìm bài đăng X theo từ khóa, mới nhất hoặc phổ biến. | có |
+| `lookup` | Tìm thông tin web, gồm tin tức theo khoảng thời gian. | có |
+| `fetch` | Đọc nội dung của một URL cụ thể. | có |
+| `format` | Biến các kết quả đã thu thập thành digest Markdown. | có |
+| `send` | Gửi nội dung lên Telegram sau khi người dùng xác nhận. | có |
+| `policy` | Tìm trong tài liệu chính sách nội bộ cục bộ. | có |
+| `papers` | Tìm bài nghiên cứu trên arXiv. | có |
+| `paper_text` | Trích xuất văn bản từ bài arXiv. | có |
 | `github_search` | Tìm issue và pull request công khai trên GitHub. | Có |
 
 ## A3. Câu hỏi mẫu để thử
