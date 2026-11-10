@@ -1,4 +1,3 @@
-version,author,changed_artifact,artifact_version,prompt_hash,tools_hash,reason,hypothesis,metric_before,metric_after,run_file
 
 v0,Minh,baseline,v0+peb1c8179815b+t5b22a2476d41,peb1c8179815b,5b22a2476d41,Initial baseline,Đánh giá hiệu suất ban đầu khi chưa tối ưu prompt và tools,N/A,case_accuracy=0.50,runs/v0_B_base_gemini_20261110T103812612148.json
 v1,Minh,artifacts/system_prompt.md,v1+pf93d0a9ae537+t5b22a2476d41,f93d0a9ae5376a835ee91a1f17a3045e228d24f8e9f7057a1b0ee8501f3a0105,5b22a2476d41b989d5dc1e54f24ce7890e781909deb2f7afafb856ab53a6d7c0,Thêm quy tắc xác nhận trước khi gửi nội dung qua Telegram,Agent sẽ yêu cầu xác nhận rõ ràng trước khi thực hiện hành động gửi hoặc đăng Telegram,case_accuracy=0.50;routing=0.6875;arguments=0.50;multiturn=0.6667,case_accuracy=0.60;routing=0.70;arguments=0.60;multiturn=0.8333,runs/v1_B_base_gemini_20261110T112820919151.json

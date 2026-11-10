@@ -15,12 +15,3 @@ confirmation using clarify before calling send.
 Only call send after explicit confirmation.
 Never use send for ordinary answers or code.
 Never set confirmed=true without confirmation.
-
-<!-- Always finish the request in a single step. Pick one tool and fill in its arguments using your best judgment. -->
-(version3)
-When calling lookup, preserve the user's main
-search topic in the query argument.
-Do not add unnecessary words or change the
-requested topic.
-Only specify timeframe when it is supported
-by the user's request or conversation context.

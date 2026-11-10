@@ -13,6 +13,7 @@ from .paper_text.tool import get_arxiv_paper_text
 from .timeline.tool import get_user_tweets
 from .fetch.tool import read_url
 from .format.tool import render_digest
+from .github_search.tool import search_github_issues
 from .policy.tool import search_company_policy
 from .social_search.tool import search_tweets
 from .send.tool import send_telegram
@@ -34,6 +35,7 @@ TOOL_FUNCTIONS = {
     "format": render_digest,
     "send": send_telegram,
     "policy": search_company_policy,
+    "github_search": search_github_issues,
     "papers": arxiv_search,
     "paper_text": get_arxiv_paper_text,
     "wikipedia": wikipedia_search,
