@@ -1,0 +1,28 @@
+{
+  "transcript_id": "v0_openrouter_20261110T204619834701",
+  "version": "v0",
+  "artifact_version": "v0+pc33e78ad0ae3+t4c6c42abfb3e",
+  "prompt_hash": "c33e78ad0ae31c77aab381c6517e73d1afa33a429f3b0b4a4730440101682b4c",
+  "tools_hash": "4c6c42abfb3e5333d62c6a18db07611d7f2ac7162376997be275c916d069238e",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "F:\\K5-L3A-DAY03-Gehihi-Prompt-Function-Calling-Tool-Design-MCP-\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "F:\\K5-L3A-DAY03-Gehihi-Prompt-Function-Calling-Tool-Design-MCP-\\starter_v0\\artifacts\\tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-11-10T20:46:19",
+  "updated_at": "2026-11-10T20:46:36",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-11-10T20:46:35",
+      "user": "how are you",
+      "status": "provider_error",
+      "assistant_text": null,
+      "rounds": [],
+      "tool_events": [],
+      "error": "RuntimeError: Missing API key env var: OPENROUTER_API_KEY",
+      "ended_at": "2026-11-10T20:46:36"
+    }
+  ]
+}
