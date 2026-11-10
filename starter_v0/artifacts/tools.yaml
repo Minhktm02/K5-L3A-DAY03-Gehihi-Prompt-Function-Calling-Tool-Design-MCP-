@@ -131,4 +131,12 @@ tools:
       properties:
         query: {type: string, default: "", description: "GitHub issue search terms"}
         max_results: {type: integer, default: 5, description: "Number of results from 1 to 10"}
+  - name: wikipedia
+    description: "Tra cứu bách khoa toàn thư Wikipedia để tìm định nghĩa, khái niệm khoa học, tiểu sử hoặc bối cảnh tri thức. Dùng khi người dùng hỏi định nghĩa khái niệm bách khoa; không dùng cho tin tức thời sự hôm nay."
+    parameters:
+      type: object
+      properties:
+        query: {type: string, default: "", description: "Từ khóa hoặc khái niệm cần tra cứu trên Wikipedia"}
+        lang: {type: string, default: "en", description: "Mã ngôn ngữ ('vi' hoặc 'en')"}
+        max_results: {type: integer, default: 3, description: "Số bài viết tối đa cần lấy"}
       required: [query]

@@ -238,3 +238,36 @@ def test_my_new_tool_failure_returns_error_dict(fake_http) -> None:
 
     assert len(calls) == 1
     assert result["error"] == "HTTPError"
+    payload = [
+        "Python",
+        ["Python (programming language)"],
+        ["A high-level general-purpose programming language."],
+        ["https://en.wikipedia.org/wiki/Python_(programming_language)"],
+    ]
+    calls = fake_http(FakeResponse(payload))
+    result = TOOL_FUNCTIONS["wikipedia"](query="Python", lang="en", max_results=1)
+
+    assert result["tool"] == "wikipedia"
+    assert len(result["items"]) == 1
+    assert result["items"][0]["title"] == "Python (programming language)"
+    assert "high-level" in result["items"][0]["summary"]
+    assert result["items"][0]["source"] == "en.wikipedia.org"
+    assert "en.wikipedia.org/w/api.php" in calls[0]["url"]
+
+
+def test_my_new_tool_bad_input_from_model() -> None:
+    # Empty query or spaces only should return empty items without crashing
+    res_empty = TOOL_FUNCTIONS["wikipedia"](query="")
+    assert res_empty["items"] == []
+
+    res_spaces = TOOL_FUNCTIONS["wikipedia"](query="   ", lang="EN")
+    assert res_spaces["items"] == []
+
+
+def test_my_new_tool_failure_returns_error_dict(fake_http) -> None:
+    # HTTP 500 error should return error dict instead of crashing
+    fake_http(FakeResponse(status_code=500))
+    result = TOOL_FUNCTIONS["wikipedia"](query="Machine Learning")
+
+    assert "error" in result
+    assert result["tool"] == "wikipedia"
